@@ -23,13 +23,14 @@ import android.widget.TextView;
 
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.utilities.NetworkUtils;
+import com.example.android.sunshine.utilities.OpenWeatherJsonUtils;
 
 import java.io.IOException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static TextView mWeatherTextView;
+    private TextView mWeatherTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
     private void loadWeatherData() {
         Context context = MainActivity.this;
         String location = SunshinePreferences.getPreferredWeatherLocation(context);
+
+        /* When working with URLs
         URL weatherDataUrl = NetworkUtils.buildUrl(location);
         new FetchWeatherTask().execute(weatherDataUrl);
+        */
+
+        new FetchWeatherJSONDataTask().execute(location);
 
     }
 
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     // COMPLETED (6) Override the doInBackground method to perform your network requests
     // COMPLETED (7) Override the onPostExecute method to display the results of the network request
 
-    public static class FetchWeatherTask extends AsyncTask<URL, Void, String> {
+    public class FetchWeatherTask extends AsyncTask<URL, Void, String> {
 
         @Override
         protected String doInBackground(URL... urls) {
@@ -82,6 +88,40 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String weatherData) {
             if (weatherData != null && ! "".equals(weatherData)) {
                 mWeatherTextView.setText(weatherData);
+            }
+        }
+    }
+
+    /**
+     * AsyncTask to retrieve weather data in JSON format
+     */
+    private class FetchWeatherJSONDataTask extends AsyncTask<String, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(String... locations) {
+            // Instead of a URL array, this method receives an array of locations as parameter
+            String location = locations[0];
+            URL weatherRequestUrl = NetworkUtils.buildUrl(location);
+
+            try {
+                String weatherResponse = NetworkUtils.getResponseFromHttpUrl(weatherRequestUrl);
+                return OpenWeatherJsonUtils
+                        .getSimpleWeatherStringsFromJson(MainActivity.this, weatherResponse);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String[] jsonWeatherData) {
+            /*
+             * Iterate through the array and append the Strings to the TextView. The reason why we add
+             * the "\n\n\n" after the String is to give visual separation between each String in the
+             * TextView. Later, we'll learn about a better way to display lists of data.
+             */
+            for (String weatherData : jsonWeatherData) {
+                mWeatherTextView.append(weatherData + "\n\n\n");
             }
         }
     }
