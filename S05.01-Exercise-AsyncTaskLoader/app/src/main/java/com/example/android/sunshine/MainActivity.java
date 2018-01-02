@@ -156,10 +156,8 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
                     String jsonWeatherResponse = NetworkUtils
                             .getResponseFromHttpUrl(weatherRequestUrl);
 
-                    String[] simpleJsonWeatherData = OpenWeatherJsonUtils
+                    return OpenWeatherJsonUtils
                             .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
-
-                    return simpleJsonWeatherData;
 
                 } catch (Exception e) {
                     e.printStackTrace();
