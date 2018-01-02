@@ -109,11 +109,12 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
         getSupportLoaderManager().initLoader(WEATHER_LOADER_ID, null, this);
     }
 
-    /**
-     * This method will get the user's preferred location for weather, and then tell some
-     * background method to get the weather data in the background.
-     */
+
     // COMPLETED (6) Remove any and all code from MainActivity that references FetchWeatherTask
+//    /**
+//     * This method will get the user's preferred location for weather, and then tell some
+//     * background method to get the weather data in the background.
+//     */
 //    private void loadWeatherData() {
 //        showWeatherDataView();
 //
