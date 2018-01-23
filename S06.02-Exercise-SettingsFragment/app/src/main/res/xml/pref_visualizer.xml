@@ -5,6 +5,8 @@
                        within the newly created xml resource directory -->
     <EditTextPreference
         android:defaultValue="@string/pref_location_default"
+        android:inputType="text"
+        android:singleLine="true"
         android:key="@string/pref_location_key"
         android:title="@string/pref_location_label" />
 
