@@ -48,8 +48,8 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      * The interface that receives onClick messages.
      */
     public interface ForecastAdapterOnClickHandler {
-//      TODO (36) Refactor onClick to accept a long as its parameter rather than a String
-        void onClick(String weatherForDay);
+        // COMPLETED (36) Refactor onClick to accept a long as its parameter rather than a String
+        void onClick(long weatherForDay);
     }
 
     private Cursor mCursor;
@@ -61,7 +61,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      * @param clickHandler The on-click handler for this adapter. This single handler is called
      *                     when an item is clicked.
      */
-    public ForecastAdapter(@NonNull Context context, ForecastAdapterOnClickHandler clickHandler) {
+    ForecastAdapter(@NonNull Context context, ForecastAdapterOnClickHandler clickHandler) {
         mContext = context;
         mClickHandler = clickHandler;
     }
@@ -104,9 +104,9 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         mCursor.moveToPosition(position);
 
 
-        /*******************
-         * Weather Summary *
-         *******************/
+        /* ******************
+         *  Weather Summary *
+         * ******************/
         /* Read date from the cursor */
         long dateInMillis = mCursor.getLong(MainActivity.INDEX_WEATHER_DATE);
         /* Get human readable string using our utility method */
@@ -177,9 +177,13 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
          */
         @Override
         public void onClick(View v) {
-//          TODO (37) Instead of passing the String for the clicked item, pass the date from the cursor
-            String weatherForDay = weatherSummary.getText().toString();
-            mClickHandler.onClick(weatherForDay);
+            // COMPLETED (37) Instead of passing the String for the clicked item, pass the date from the cursor
+            // String weatherForDay = weatherSummary.getText().toString();
+
+            int position = getAdapterPosition();
+            mCursor.moveToPosition(position);
+            long date = mCursor.getLong(MainActivity.INDEX_WEATHER_DATE);
+            mClickHandler.onClick(date);
         }
     }
 }
