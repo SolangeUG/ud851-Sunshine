@@ -212,4 +212,24 @@ public final class SunshinePreferences {
         editor.putLong(lastNotificationKey, timeOfNotification);
         editor.apply();
     }
+
+    /**
+     * Returns true if the user prefers to see notifications from Sunshine, false otherwise. This
+     * preference can be changed by the user within the SettingsFragment.
+     *
+     * @param context Used to access SharedPreferences
+     * @return true if the user prefers to see notifications, false otherwise
+     */
+     public static boolean areNotificationsEnabled(Context context) {
+         String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
+         boolean shouldDisplayNotificationsByDefault =
+                 context.getResources()
+                        .getBoolean(R.bool.show_notifications_by_default);
+
+         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean shouldDisplayNotifications =
+                sp.getBoolean(displayNotificationsKey, shouldDisplayNotificationsByDefault);
+
+        return shouldDisplayNotifications;
+     }
 }
