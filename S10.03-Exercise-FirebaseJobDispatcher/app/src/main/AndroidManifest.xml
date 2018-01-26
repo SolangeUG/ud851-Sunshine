@@ -19,8 +19,6 @@
     package="com.example.android.sunshine">
 
     <!-- This permission is necessary in order for Sunshine to perform network access. -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -63,8 +61,17 @@
             android:name=".sync.SunshineSyncIntentService"
             android:exported="false" />
 
-        <!-- TODO (8) Declare SunshineFirebaseJobService as a service in the manifest -->
-            <!-- TODO (9) Declare an intent filter with the action ACTION_EXECUTE -->
+        <!-- COMPLETED (8) Declare SunshineFirebaseJobService as a service in the manifest -->
+        <service android:name=".sync.SunshineFirebaseJobService"
+            android:exported="false">
+            <!-- COMPLETED (9) Declare an intent filter with the action ACTION_EXECUTE -->
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
 
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
